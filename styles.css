@@ -1,0 +1,166 @@
+/* Page Management */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1);    opacity: 0.3; }
+    50%       { transform: scale(1.2); opacity: 0.1; }
+}
+
+@keyframes pulseSecondary {
+    0%, 100% { transform: scale(1);     opacity: 0.4; }
+    50%       { transform: scale(1.15); opacity: 0.2; }
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1);    }
+    50%       { transform: scale(0.95); }
+}
+
+.fade-in    { animation: fadeIn   0.8s ease-out forwards; }
+.slide-up   { animation: slideUp  0.6s ease-out forwards; }
+.slide-left { animation: slideLeft  0.6s ease-out forwards; }
+.slide-right{ animation: slideRight 0.6s ease-out forwards; }
+.scale-in   { animation: scaleIn  0.8s ease-out forwards; }
+
+/* Progress Dots */
+.progress-dot {
+    height: 4px;
+    width: 8px;
+    background: #D5E8E8;
+    border-radius: 2px;
+    transition: all 0.5s ease;
+}
+.progress-dot.active {
+    width: 32px;
+    background: #0D9488;
+}
+
+/* Onboarding Steps */
+.onboarding-step        { display: none; }
+.onboarding-step.active { display: block; animation: fadeIn 0.6s ease-out; }
+
+/* Pulse Container for Live Page */
+.pulse-container {
+    position: relative;
+    height: 192px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pulse-ring {
+    position: absolute;
+    border-radius: 50%;
+    background: #0D9488;
+}
+
+.pulse-ring-1 {
+    width: 224px;
+    height: 224px;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.pulse-ring-2 {
+    width: 160px;
+    height: 160px;
+    animation: pulseSecondary 3s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.pulse-center {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+.pulse-center::before { content: '♡'; }
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #D5E8E8;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider            { background-color: #0D9488; }
+input:checked + .slider:before     { transform: translateX(20px); }
+
+/* Navigation Active State */
+.nav-item.active { color: #0D9488; }
+
+@media (min-width: 600px) {
+    #baby-setup-page form,
+    #baby-setup-page .flex.justify-center,
+    #baby-page form,
+    #baby-page .flex.justify-center {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

@@ -1,0 +1,130 @@
+html.night {
+    --bg:         #181818;
+    --bg-card:    #212121;
+    --bg-card-2:  #2a2a2a;
+    --fg:         #cecece;
+    --fg-muted:   #888888;
+    --border:     rgba(255, 255, 255, 0.08);
+    --primary-night: #6ac1b9;
+}
+
+html.night body {
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Pages & gradients */
+html.night .page > div {
+    background: linear-gradient(to bottom, var(--bg), #1e1e1e) !important;
+}
+
+/* Cards — white → dark */
+html.night .bg-white {
+    background-color: var(--bg-card) !important;
+}
+
+/* Hero card & any teal gradient card */
+html.night .bg-gradient-to-br.from-\[#FFFBF0\],
+html.night .rounded-3xl.bg-gradient-to-br {
+    background: linear-gradient(to bottom right, var(--bg-card), var(--bg-card-2)) !important;
+}
+
+/* Nav bar */
+html.night nav.fixed {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border) !important;
+}
+
+/* Text */
+html.night .text-foreground {
+    color: var(--fg) !important;
+}
+
+html.night .text-foreground\/40,
+html.night .opacity-60,
+html.night .opacity-70 {
+    opacity: 0.5 !important;
+}
+
+/* ── All icons default to #cecece ─────────────────────────────────────────── */
+html.night svg {
+    color: #cecece !important;
+}
+
+/* ── Primary teal → #6ac1b9 everywhere ───────────────────────────────────── */
+html.night .text-primary {
+    color: var(--primary-night) !important;
+}
+
+html.night svg.text-primary {
+    color: var(--primary-night) !important;
+}
+
+/* Nav items — unselected: icon + label both #cecece */
+html.night .nav-item svg {
+    color: #cecece !important;
+}
+html.night .nav-item span {
+    color: #cecece !important;
+}
+
+/* Nav items — selected: icon + label both #6ac1b9 */
+html.night .nav-item.active svg {
+    color: var(--primary-night) !important;
+}
+html.night .nav-item.active span {
+    color: var(--primary-night) !important;
+}
+
+/* Buttons with primary gradient */
+html.night .bg-gradient-to-br.from-primary {
+    background: linear-gradient(to bottom right, #6ac1b9, #4db5ac) !important;
+}
+
+/* Icon bg circles */
+html.night .bg-primary\/10 {
+    background-color: rgba(106, 193, 185, 0.15) !important;
+}
+
+/* Activity chart line & gradient */
+html.night #chart-line {
+    stroke: var(--primary-night) !important;
+}
+html.night #activity-gradient stop:first-child {
+    stop-color: var(--primary-night) !important;
+}
+html.night #activity-gradient stop:last-child {
+    stop-color: var(--primary-night) !important;
+}
+
+/* Notification badge accent dot — keep visible */
+html.night .bg-accent {
+    background-color: #f59e0b !important;
+}
+
+/* Inputs */
+html.night input[type="email"],
+html.night input[type="password"],
+html.night input[type="text"],
+html.night input[type="date"] {
+    background-color: var(--bg-card-2) !important;
+    color: var(--fg) !important;
+    border-color: transparent;
+}
+
+html.night input::placeholder {
+    color: var(--fg-muted) !important;
+}
+
+/* Toggle switch track when checked */
+html.night .switch input:checked + .slider {
+    background-color: var(--primary-night) !important;
+}
+
+/* Smooth transitions */
+html.night *,
+html.night *::before,
+html.night *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}

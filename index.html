@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuetNacht</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FFFBF0',
+                        foreground: '#1B3A3A',
+                        primary: '#0D9488',
+                        'primary-light': '#14B8A6',
+                        muted: '#D5E8E8',
+                        accent: '#FBBF24',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="nightmode.css">
+</head>
+<body class="bg-background text-foreground font-sans">
+<div id="app">
+
+    <!-- ── Login Page ──────────────────────────────────────────────────────── -->
+    <div id="login-page" class="page active">
+        <div class="min-h-screen flex flex-col justify-center px-6 py-12 bg-gradient-to-b from-[#FFFBF0] to-[#D5E8E8] fade-in">
+            <div class="text-center mb-12">
+                <h1 class="font-serif text-[2.5rem] text-primary mb-3 tracking-tight">GuetNacht</h1>
+                <p class="text-foreground opacity-70">Schlafen beruhigt</p>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <input type="email" placeholder="E-Mail"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required>
+                <input type="password" placeholder="Passwort"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required>
+
+                <p id="login-error" class="hidden text-sm text-red-500 text-center px-2"></p>
+
+                <button type="submit"
+                        class="w-full py-4 rounded-2xl text-white shadow-lg bg-gradient-to-br from-primary to-primary-light active:scale-[0.98] transition-transform">
+                    Anmelden
+                </button>
+            </form>
+
+            <div class="text-center mt-6 space-y-3">
+                <a href="#" class="block text-sm opacity-60 hover:opacity-100 transition-opacity">Passwort vergessen?</a>
+                <p class="text-sm text-foreground opacity-70">
+                    Noch kein Konto?
+                    <button onclick="navigateTo('register')" class="text-primary font-medium hover:underline">Registrieren</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Register Page ───────────────────────────────────────────────────── -->
+    <div id="register-page" class="page">
+        <div class="min-h-screen flex flex-col justify-center px-6 py-12 bg-gradient-to-b from-[#FFFBF0] to-[#D5E8E8] fade-in">
+            <div class="text-center mb-10">
+                <h1 class="font-serif text-[2.5rem] text-primary mb-3 tracking-tight">Konto erstellen</h1>
+                <p class="text-foreground opacity-70">Beginne deinen ruhigen Schlaf</p>
+            </div>
+
+            <form id="register-form" class="space-y-4">
+                <input type="text" name="name" placeholder="Dein Name"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required>
+                <input type="email" name="email" placeholder="E-Mail"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required>
+                <input type="password" name="password" placeholder="Passwort (min. 8 Zeichen, Gross-/Kleinbuchstaben, Zahl, Sonderzeichen)"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required minlength="8">
+                <input type="password" name="confirm" placeholder="Passwort bestätigen"
+                       class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300" required>
+
+                <p id="register-error" class="hidden text-sm text-red-500 text-center px-2"></p>
+
+                <button type="submit"
+                        class="w-full py-4 rounded-2xl text-white shadow-lg bg-gradient-to-br from-primary to-primary-light active:scale-[0.98] transition-transform">
+                    Registrieren
+                </button>
+            </form>
+
+            <div class="text-center mt-6">
+                <p class="text-sm text-foreground opacity-70">
+                    Bereits ein Konto?
+                    <button onclick="navigateTo('login')" class="text-primary font-medium hover:underline">Anmelden</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Onboarding Page ─────────────────────────────────────────────────── -->
+    <div id="onboarding-page" class="page">
+        <div class="min-h-screen flex flex-col px-6 py-8 bg-gradient-to-b from-[#FFFBF0] to-[#D5E8E8]">
+            <div class="flex justify-between items-center mb-12">
+                <div class="flex gap-2">
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                <button class="skip-btn text-sm opacity-60 hover:opacity-100 transition-opacity" id="skip-onboarding">Überspringen</button>
+            </div>
+
+            <div class="flex-1 flex items-center justify-center">
+                <div class="onboarding-step active text-center px-4" data-step="0">
+                    <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center scale-in">
+                        <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H9Z"/>
+                            <path d="M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z"/>
+                        </svg>
+                    </div>
+                    <h2 class="font-serif text-[2rem] text-foreground mb-4 tracking-tight">Willkommen bei GuetNacht</h2>
+                    <p class="text-lg text-foreground opacity-70 max-w-md mx-auto leading-relaxed">Überwache den Schlaf deines Babys mit Seelenfrieden</p>
+                </div>
+
+                <div class="onboarding-step text-center px-4" data-step="1">
+                    <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center scale-in">
+                        <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 3a6 6 0 0 0 9 5.2M12 21v-8.5"/>
+                            <path d="M12 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="font-serif text-[2rem] text-foreground mb-4 tracking-tight">Beruhigt ruhen</h2>
+                    <p class="text-lg text-foreground opacity-70 max-w-md mx-auto leading-relaxed">Sanfte Überwachung, die den natürlichen Schlafrhythmus respektiert</p>
+                </div>
+
+                <div class="onboarding-step text-center px-4" data-step="2">
+                    <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center scale-in">
+                        <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                        </svg>
+                    </div>
+                    <h2 class="font-serif text-[2rem] text-foreground mb-4 tracking-tight">Stets informiert</h2>
+                    <p class="text-lg text-foreground opacity-70 max-w-md mx-auto leading-relaxed">Erhalte achtsame Benachrichtigungen, wenn es darauf ankommt</p>
+                </div>
+            </div>
+
+            <button id="next-onboarding"
+                    class="w-full py-4 rounded-2xl text-white shadow-lg bg-gradient-to-br from-primary to-primary-light active:scale-[0.98] transition-transform">
+                Weiter
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Dashboard Page ─────────────────────────────────────────────────── -->
+    <div id="dashboard-page" class="page">
+        <div class="min-h-screen pb-24 px-6 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="font-serif text-[1.75rem] text-foreground">GuetNacht</h1>
+                <button onclick="navigateTo('notifications')" class="relative p-2">
+                    <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notif-badge" class="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full hidden"></span>
+                </button>
+            </div>
+
+            <div class="rounded-3xl p-8 shadow-lg bg-gradient-to-br from-[#FFFBF0] to-[#D5E8E8] text-center mb-6 fade-in">
+                <p id="sleep-status-text" class="text-lg text-foreground opacity-70 mb-4">Lädt…</p>
+                <div id="sleep-time" class="font-serif text-5xl text-primary mb-2 tracking-tight">—</div>
+                <p id="sleep-quality" class="text-sm text-foreground opacity-60"></p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-white rounded-2xl p-4 text-center shadow-sm slide-up" style="animation-delay:.1s">
+                    <p id="stat-movements" class="text-2xl text-primary mb-1">—</p>
+                    <p class="text-xs text-foreground opacity-60">Bewegungen</p>
+                </div>
+                <div class="bg-white rounded-2xl p-4 text-center shadow-sm slide-up" style="animation-delay:.2s">
+                    <p id="stat-total-sleep" class="text-2xl text-primary mb-1">—</p>
+                    <p class="text-xs text-foreground opacity-60">Gesamtschlaf</p>
+                </div>
+                <div class="bg-white rounded-2xl p-4 text-center shadow-sm slide-up" style="animation-delay:.3s">
+                    <p id="stat-wakeups" class="text-2xl text-primary mb-1">—</p>
+                    <p class="text-xs text-foreground opacity-60">Aufwachen</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm slide-up" style="animation-delay:.4s">
+                <h3 class="text-foreground mb-4">24 Stunden Aktivität</h3>
+                <div class="relative w-full h-[180px]">
+                    <svg id="activity-chart" viewBox="0 0 100 100" class="w-full h-full" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="activity-gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%"  stop-color="#0D9488" stop-opacity="0.3"/>
+                                <stop offset="95%" stop-color="#0D9488" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path id="chart-area" fill="url(#activity-gradient)"/>
+                        <path id="chart-line" fill="none" stroke="#0D9488" stroke-width="0.5"/>
+                    </svg>
+                    <div class="flex justify-between px-2 text-xs text-foreground opacity-50 mt-2">
+                        <span>00:00</span><span>04:00</span><span>08:00</span>
+                        <span>12:00</span><span>16:00</span><span>20:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-primary/15 px-6 py-4 shadow-lg">
+            <div class="flex justify-around items-center">
+                <button class="nav-item active flex flex-col items-center gap-1" onclick="navigateTo('dashboard')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="text-xs">Start</span>
+                </button>
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('live')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span class="text-xs">Live</span>
+                </button>
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('settings')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="text-xs">Einstellungen</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- ── Live Page ───────────────────────────────────────────────────────── -->
+    <div id="live-page" class="page">
+        <div class="min-h-screen pb-24 px-6 py-8">
+            <div class="flex items-center justify-between mb-6">
+                <button onclick="navigateTo('dashboard')" class="flex items-center gap-2 text-foreground">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                    <span>Zurück</span>
+                </button>
+                <h2 class="font-serif text-xl text-foreground">Live Überwachung</h2>
+                <div class="w-20"></div>
+            </div>
+
+            <div class="rounded-3xl p-8 bg-gradient-to-br from-[#FFFBF0] to-[#D5E8E8] shadow-lg mb-4 fade-in">
+                <p class="text-lg text-foreground opacity-70 text-center mb-6 js-baby-name">… wird überwacht</p>
+                <div class="pulse-container relative h-48 flex items-center justify-center mb-6">
+                    <div class="pulse-ring pulse-ring-1"></div>
+                    <div class="pulse-ring pulse-ring-2"></div>
+                    <div class="pulse-center"></div>
+                </div>
+                <div class="text-center">
+                    <p id="live-status-label" class="font-serif text-[1.75rem] text-primary mb-1">—</p>
+                    <p id="live-status-detail" class="text-sm text-foreground opacity-60">Lädt…</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm slide-left">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-primary" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-foreground opacity-60">Verbindung</p>
+                        <p id="live-signal" class="text-base text-primary">—</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm slide-right">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="12" x="3" y="8" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-foreground opacity-60">Batterie</p>
+                        <p id="live-battery" class="text-base text-primary">—</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-sm slide-up">
+                <h4 class="text-foreground mb-3">Letzte Aktivitäten</h4>
+                <div id="live-events" class="space-y-3">
+                    <p class="text-sm text-foreground opacity-50">Lädt…</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-primary/15 px-6 py-4 shadow-lg">
+            <div class="flex justify-around items-center">
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('dashboard')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="text-xs">Start</span>
+                </button>
+                <button class="nav-item active flex flex-col items-center gap-1" onclick="navigateTo('live')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span class="text-xs">Live</span>
+                </button>
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('settings')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="text-xs">Einstellungen</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- ── Settings Page ───────────────────────────────────────────────────── -->
+    <div id="settings-page" class="page">
+        <div class="min-h-screen pb-24 px-6 py-8">
+            <div class="flex items-center justify-between mb-8">
+                <button onclick="navigateTo('dashboard')" class="flex items-center gap-2 text-foreground">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                    <span>Zurück</span>
+                </button>
+                <h2 class="font-serif text-2xl text-foreground">Einstellungen</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div class="space-y-4 mb-8">
+                <div class="bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm slide-up">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-foreground font-medium">Benachrichtigungen</h4>
+                        <p class="text-xs text-foreground opacity-60">Alarme erhalten</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notifications-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm slide-up" style="animation-delay:.1s">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-foreground font-medium">Tonbenachrichtigungen</h4>
+                        <p class="text-xs text-foreground opacity-60">Sanfte Klänge</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="sounds-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm slide-up" style="animation-delay:.2s">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 5.2M12 21v-8.5"/><path d="M12 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-foreground font-medium">Nachtmodus</h4>
+                        <p class="text-xs text-foreground opacity-60">Gedimmte Anzeige</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="nightmode-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="space-y-3 mb-8">
+                <button onclick="navigateTo('baby')" class="w-full bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform slide-up" style="animation-delay:.3s">
+                    <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="text-foreground">Baby-Profil</span>
+                </button>
+                <button class="w-full bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform slide-up" style="animation-delay:.4s">
+                    <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                    <span class="text-foreground">Datenschutz & Sicherheit</span>
+                </button>
+                <button class="w-full bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform slide-up" style="animation-delay:.5s">
+                    <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/></svg>
+                    <span class="text-foreground">Hilfe & Support</span>
+                </button>
+            </div>
+
+            <!-- Logout -->
+            <button id="logout-btn"
+                    class="w-full bg-white rounded-2xl p-5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-red-500 slide-up"
+                    style="animation-delay:.6s">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Abmelden</span>
+            </button>
+
+            <div class="text-center mt-8 fade-in">
+                <p class="text-sm text-foreground opacity-40">Version 1.0.0</p>
+            </div>
+        </div>
+
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-primary/15 px-6 py-4 shadow-lg">
+            <div class="flex justify-around items-center">
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('dashboard')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="text-xs">Start</span>
+                </button>
+                <button class="nav-item flex flex-col items-center gap-1 text-foreground/40" onclick="navigateTo('live')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span class="text-xs">Live</span>
+                </button>
+                <button class="nav-item active flex flex-col items-center gap-1" onclick="navigateTo('settings')">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="text-xs">Einstellungen</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- ── Notifications Page ──────────────────────────────────────────────── -->
+    <div id="notifications-page" class="page">
+        <div class="min-h-screen px-6 py-8">
+            <div class="flex items-center justify-between mb-8">
+                <button onclick="navigateTo('dashboard')" class="flex items-center gap-2 text-foreground">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                    <span>Zurück</span>
+                </button>
+                <h2 class="font-serif text-2xl text-foreground">Benachrichtigungen</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div id="notifications-list" class="space-y-3 mb-12">
+                <p class="text-center text-sm text-foreground opacity-50 py-8">Lädt…</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Baby Profile Page ──────────────────────────────────────────────── -->
+    <div id="baby-page" class="page">
+        <div class="min-h-screen px-6 py-8">
+            <div class="flex items-center justify-between mb-8">
+                <button onclick="navigateTo('settings')" class="flex items-center gap-2 text-foreground">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                    <span>Zurück</span>
+                </button>
+                <h2 class="font-serif text-2xl text-foreground">Baby-Profil</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div class="flex justify-center mb-8 fade-in">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <form id="baby-profile-form" class="space-y-4">
+                <div class="slide-up">
+                    <label class="block text-sm text-foreground opacity-70 mb-2 px-1">Name</label>
+                    <input id="baby-name-input" type="text" placeholder="Name des Babys"
+                           class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300"
+                           required>
+                </div>
+                <div class="slide-up" style="animation-delay:.1s">
+                    <label class="block text-sm text-foreground opacity-70 mb-2 px-1">Geburtsdatum</label>
+                    <input id="baby-birthdate-input" type="date"
+                           class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300">
+                </div>
+
+                <p id="baby-profile-error" class="hidden text-sm text-red-500 text-center px-2"></p>
+                <p id="baby-profile-success" class="hidden text-sm text-primary text-center px-2">✓ Gespeichert</p>
+
+                <button type="submit"
+                        class="w-full py-4 rounded-2xl text-white shadow-lg bg-gradient-to-br from-primary to-primary-light active:scale-[0.98] transition-transform slide-up"
+                        style="animation-delay:.2s">
+                    Speichern
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── Baby Setup Page (forced on first login) ────────────────────────── -->
+    <div id="baby-setup-page" class="page">
+        <div class="min-h-screen flex flex-col justify-center px-6 py-12 bg-gradient-to-b from-[#FFFBF0] to-[#D5E8E8] fade-in">
+            <div class="text-center mb-10">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <h1 class="font-serif text-[2rem] text-foreground mb-3 tracking-tight">Dein Baby</h1>
+                <p class="text-foreground opacity-70">Gib deinem Baby einen Namen, damit wir alles für euch einrichten können.</p>
+            </div>
+
+            <form id="baby-setup-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-foreground opacity-70 mb-2 px-1">Name des Babys</label>
+                    <input id="baby-setup-name" type="text" placeholder="z.B. Liam"
+                           class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300"
+                           required>
+                </div>
+                <div>
+                    <label class="block text-sm text-foreground opacity-70 mb-2 px-1">Geburtsdatum <span class="opacity-50">(optional)</span></label>
+                    <input id="baby-setup-birthdate" type="date"
+                           class="w-full px-5 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-300">
+                </div>
+
+                <p id="baby-setup-error" class="hidden text-sm text-red-500 text-center px-2"></p>
+
+                <button type="submit"
+                        class="w-full py-4 rounded-2xl text-white shadow-lg bg-gradient-to-br from-primary to-primary-light active:scale-[0.98] transition-transform">
+                    Los geht's
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="js/api.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
