@@ -136,19 +136,19 @@ _(Zeigt die Architektur unseres Hardware-Setups und den Datenfluss)_
 | Vorwiderstand   | 220 Ω                            | 1     | Begrenzt den Strom durch die LED und schützt LED sowie GPIO-Pin                                                 |
 | Stromversorgung | Powerbank / USB-C-Netzteil (5 V) | 1     | Versorgt den ESP32-C6 mobil (Powerbank) oder stationär (Netzteil) am Babybett                                   |
 
-![Komponentenplan GuetNacht](physical-computing/images/im4_komponentenplan.jpeg)
+![Komponentenplan GuetNacht](images/im4_komponentenplan.jpeg)
 
 ##### Steckplan
 
 _(Nachgebaut in Wokwi zur einfachen Reproduzierbarkeit)_
 
-![Steckplan GuetNacht](physical-computing/images/im4_steckplan.jpeg)
+![Steckplan GuetNacht](images/im4_steckplan.jpeg)
 
 ##### System in Aktion
 
 Die LED leuchtet als Zeichen für eine intakte Verbindung zum Backend. Sobald eine Bewegung erkannt wird, leitet der Sensor diese zur Verarbeitung an die WebApp weiter.
 
-![System in Aktion](physical-computing/images/im4wlan_test.gif)
+![System in Aktion](images/im4wlan_test.gif)
 
 ---
 
