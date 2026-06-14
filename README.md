@@ -2,11 +2,11 @@
 
 ## Kurzbeschreibung des Projekts
 
-* **Modul:** Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)
-* **Themenfeld:** IoT-Applikation zum Thema Eltern mit kleinen Kindern
-* **Name des Projekts:** GuetNacht
-* **Team Physical Computing:** Ali Tas, Naim El Amri Fernandez
-* **Team WebApp:** Berhan Can Soeyler, Domenico Winkelmann
+- **Modul:** Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)
+- **Themenfeld:** IoT-Applikation zum Thema Eltern mit kleinen Kindern
+- **Name des Projekts:** GuetNacht
+- **Team Physical Computing:** Ali Tas, Naim El Amri Fernandez
+- **Team WebApp:** Berhan Can Soeyler, Domenico Winkelmann
 
 Eltern von Kleinkindern müssen nachts regelmässig aufstehen, um zu prüfen, ob ihr Kind schläft – das unterbricht den eigenen Schlaf unnötig. **GuetNacht** löst dieses Problem: Ein Sensor im Kinderzimmer erfasst Bewegungen des Kindes und sendet die Daten in Echtzeit an eine Web-App. Eltern können jederzeit auf ihrem Handy prüfen, ob ihr Kind schläft – ohne aufzustehen. Zusätzlich werden Schlafverläufe über die Nacht hinweg aufgezeichnet, sodass Eltern Muster erkennen und den Schlaf ihrer Kinder besser verstehen können.
 
@@ -16,23 +16,25 @@ Eltern von Kleinkindern müssen nachts regelmässig aufstehen, um zu prüfen, ob
 
 ### UX & Konzeption
 
-* **Figma Prototype:** [Link zum Figma](https://swab-petal-26919808.figma.site/login)
-* **User Flow + Screen Flow:** [Figma Board](https://www.figma.com/board/huYgRhEg2Ajw7vPQa6zClf/IM4---User-Flow?node-id=0-1&t=tmeUp1Ry2uoL12Zv-0)
+- **Figma Prototype:** [Link zum Figma](https://swab-petal-26919808.figma.site/login)
+- **User Flow + Screen Flow:** [Figma Board](https://www.figma.com/board/huYgRhEg2Ajw7vPQa6zClf/IM4---User-Flow?node-id=0-1&t=tmeUp1Ry2uoL12Zv-0)
 
 **Angedachte Features:**
-* Live-Ansicht ob das Kind schläft (Echtzeit-Status)
-* Schlaf-History über die Nacht (Verlauf und Statistiken)
-* Alarmierung mit Ton bei Bewegung / Aufwachen
+
+- Live-Ansicht ob das Kind schläft (Echtzeit-Status)
+- Schlaf-History über die Nacht (Verlauf und Statistiken)
+- Alarmierung mit Ton bei Bewegung / Aufwachen
 
 **Nicht umgesetzte Features:**
-* **Alarmierung mit Ton** – zu aufwändig, keine Zeit mehr bis zur Abgabe. Das Feature ist konzeptionell vollständig geplant und könnte in einem nächsten Entwicklungsschritt ergänzt werden.
+
+- **Alarmierung mit Ton** – zu aufwändig, keine Zeit mehr bis zur Abgabe. Das Feature ist konzeptionell vollständig geplant und könnte in einem nächsten Entwicklungsschritt ergänzt werden.
 
 ---
 
 ### Setup
 
-* **WebApp:** [https://im4.domenicowinkelmann.ch/](https://im4.domenicowinkelmann.ch/)
-* **Video-Dokumentation:** 
+- **WebApp:** [https://im4.domenicowinkelmann.ch/](https://im4.domenicowinkelmann.ch/)
+- **Video-Dokumentation:** [Erklärvideo ansehen](https://www.youtube.com/watch?v=vcH0zcYs2J0)
 
 ---
 
@@ -40,9 +42,9 @@ Eltern von Kleinkindern müssen nachts regelmässig aufstehen, um zu prüfen, ob
 
 **1. Benötigte Infrastruktur**
 
-* Webserver mit PHP 8.0+ (z.B. Infomaniak, XAMPP lokal)
-* MySQL-Datenbank
-* PHP-Erweiterungen: `pdo`, `pdo_mysql`, `json`
+- Webserver mit PHP 8.0+ (z.B. Infomaniak, XAMPP lokal)
+- MySQL-Datenbank
+- PHP-Erweiterungen: `pdo`, `pdo_mysql`, `json`
 
 **2. Repository klonen**
 
@@ -97,6 +99,56 @@ Die `baby_id` erhältst du nach dem ersten Login und der Registrierung des Babys
 
 #### Bauanleitung Physical Computing
 
+**1. Hardware-Aufbau (Verkabelung)**
+Der Aufbau ist so konzipiert, dass er als passiver Schlafmonitor autark mit einer Powerbank betrieben werden kann.
+
+- **Stromversorgung:** Eine Standard-Powerbank wird über USB-C mit dem ESP32-C6 verbunden.
+- **PIR-Sensor (SR602):**
+  - `VCC` an den `3.3V` Pin des ESP32.
+  - `GND` an den gemeinsamen `GND` (Masse) des Breadboards.
+  - `OUT` (Datenleitung) an Pin `GPIO 7` des ESP32.
+- **Status-LED:**
+  - Das Plus-Bein (Anode) wird in Serie mit einem 220 Ohm Vorwiderstand an Pin `GPIO 8` angeschlossen.
+  - Das Minus-Bein (Kathode) wird an den gemeinsamen `GND` angeschlossen.
+
+**2. Software-Vorbereitung (Arduino IDE)**
+
+1. Arduino IDE installieren und das Board **"ESP32C6 Dev Module"** im Boardverwalter auswählen.
+2. Sicherstellen, dass unter `Tools > USB CDC On Boot` die Einstellung auf `Enabled` gesetzt ist.
+3. Den Code aus `physical-computing/guetnacht_sensor.ino` in der Arduino IDE öffnen.
+
+**3. Konfiguration & Installation**
+
+1. Im Code müssen vor dem Upload die WLAN-Zugangsdaten (`ssid` und `password`) angepasst werden.
+2. Die ID des zu trackenden Kindes (`babyId`) kann bei Bedarf im oberen Konfigurationsbereich angepasst werden.
+3. Den Code kompilieren und per USB auf den ESP32 flashen (ggf. den BOOT-Knopf am ESP32 gedrückt halten, falls der Upload nicht automatisch startet).
+4. Sobald der ESP32 mit Strom versorgt wird, verbindet er sich mit dem WLAN. Die Status-LED leuchtet dauerhaft, wenn die WLAN-Verbindung und der letzte Server-Kontakt erfolgreich waren.
+
+##### Komponentenplan
+
+_(Zeigt die Architektur unseres Hardware-Setups und den Datenfluss)_
+
+| Bauteil         | Bezeichnung                      | Menge | Funktion                                                                                                        |
+| --------------- | -------------------------------- | ----- | --------------------------------------------------------------------------------------------------------------- |
+| Mikrocontroller | ESP32-C6                         | 1     | Zentrale Steuereinheit: liest den PIR-Sensor, steuert die Status-LED und sendet die Daten per integriertem WLAN |
+| PIR-Sensor      | SR602                            | 1     | Erfasst kontaktlos Bewegung/Wärme des Babys – passives, kameraloses Schlafmonitoring                            |
+| LED (bedrahtet) | –                                | 1     | Status-LED: signalisiert, ob WLAN **und** Server erreichbar sind                                                |
+| Vorwiderstand   | 220 Ω                            | 1     | Begrenzt den Strom durch die LED und schützt LED sowie GPIO-Pin                                                 |
+| Stromversorgung | Powerbank / USB-C-Netzteil (5 V) | 1     | Versorgt den ESP32-C6 mobil (Powerbank) oder stationär (Netzteil) am Babybett                                   |
+
+![Komponentenplan GuetNacht](physical-computing/images/im4_komponentenplan.jpeg)
+
+##### Steckplan
+
+_(Nachgebaut in Wokwi zur einfachen Reproduzierbarkeit)_
+
+![Steckplan GuetNacht](physical-computing/images/im4_steckplan.jpeg)
+
+##### System in Aktion
+
+Die LED leuchtet als Zeichen für eine intakte Verbindung zum Backend. Sobald eine Bewegung erkannt wird, leitet der Sensor diese zur Verarbeitung an die WebApp weiter.
+
+![System in Aktion](physical-computing/images/im4wlan_test.gif)
 
 ---
 
@@ -161,12 +213,12 @@ POST /backend/api/sensor/ingest.php
 { "baby_id": 1, "bewegung": 1, "battery": 87, "signal": 4 }
 ```
 
-| Feld | Typ | Beschreibung |
-|---|---|---|
-| `baby_id` | int | ID des Babys in der Datenbank (hardcoded im Sensor) |
+| Feld       | Typ | Beschreibung                                           |
+| ---------- | --- | ------------------------------------------------------ |
+| `baby_id`  | int | ID des Babys in der Datenbank (hardcoded im Sensor)    |
 | `bewegung` | int | `1` = Bewegung erkannt, `0` = keine Bewegung (schläft) |
-| `battery` | int | Batteriestand in % (optional) |
-| `signal` | int | WLAN-Signalstärke 1–5 (optional) |
+| `battery`  | int | Batteriestand in % (optional)                          |
+| `signal`   | int | WLAN-Signalstärke 1–5 (optional)                       |
 
 `ingest.php` übernimmt die gesamte Logik: Schlaf-Sessions öffnen/schliessen, Events schreiben, Notifications erstellen.
 
@@ -176,15 +228,15 @@ POST /backend/api/sensor/ingest.php
 
 Die Datenbank enthält folgende Tabellen:
 
-| Tabelle | Beschreibung |
-|---|---|
-| `users` | App-Benutzer (E-Mail, Passwort-Hash) |
-| `session_tokens` | Auth-Tokens mit Ablaufdatum (7 Tage) |
-| `babies` | Babyprofil (Name, Geburtsdatum, verknüpft mit User) |
-| `sleep_sessions` | Schlafphasen (started_at / ended_at) |
-| `sensor_events` | Einzelne Ereignisse (Bewegung, Schlafen, Aufgewacht) |
-| `device_status` | Letzter bekannter Sensor-Zustand (Batterie, Signal) |
-| `notifications` | Benachrichtigungen für den User |
+| Tabelle          | Beschreibung                                         |
+| ---------------- | ---------------------------------------------------- |
+| `users`          | App-Benutzer (E-Mail, Passwort-Hash)                 |
+| `session_tokens` | Auth-Tokens mit Ablaufdatum (7 Tage)                 |
+| `babies`         | Babyprofil (Name, Geburtsdatum, verknüpft mit User)  |
+| `sleep_sessions` | Schlafphasen (started_at / ended_at)                 |
+| `sensor_events`  | Einzelne Ereignisse (Bewegung, Schlafen, Aufgewacht) |
+| `device_status`  | Letzter bekannter Sensor-Zustand (Batterie, Signal)  |
+| `notifications`  | Benachrichtigungen für den User                      |
 
 ### Authentifizierung
 
@@ -201,7 +253,7 @@ Die App verwendet **HMAC-signierte Bearer Tokens**:
 
 ## Known Bugs
 
-* **Push-Benachrichtigungen (Ton/Push):** Nicht implementiert – das Backend und die UI sind vorbereitet (Toggle in Einstellungen), aber die eigentliche Browser-Push-Benachrichtigung wurde nicht fertiggestellt.
+- **Push-Benachrichtigungen (Ton/Push):** Nicht implementiert – das Backend und die UI sind vorbereitet (Toggle in Einstellungen), aber die eigentliche Browser-Push-Benachrichtigung wurde nicht fertiggestellt.
 
 ---
 
@@ -211,13 +263,15 @@ Die App verwendet **HMAC-signierte Bearer Tokens**:
 Das Projekt lief insgesamt sehr gut. Auf der WebApp-Seite konnte das Team die Kenntnisse in Tailwind CSS vertiefen und ein vollständiges PHP-Backend mit sauberer Schichtenarchitektur (Config, Models, Middleware, API) aufbauen. Rückblickend würde das Team die Zeitplanung besser aufteilen, um auch kleinere Features wie die Ton-Benachrichtigung noch umsetzen zu können.
 
 **Herausforderungen & Lösungen:**
-* **Ton-Benachrichtigungen:** Wurden konzeptionell geplant und technisch angedacht, aber wegen Zeitmangels/Aufwendigkeit nicht implementiert. Versuche mit der Browser Notifications API zeigten erste Resultate, funktionierten aber nicht zuverlässig genug – daher wurde das Feature fallen gelassen.
-* **Sensor-Integration:** Die Schnittstelle zwischen ESP32 und Backend musste so einfach wie möglich gehalten werden. Die Lösung (ein einziger POST-Endpunkt, baby_id hardcoded im Sensor) hat sich als pragmatisch und robust erwiesen.
-* **Datenbank-Setup:** Kleinere SQL-Kompatibilitätsprobleme (z.B. `INTERVAL`-Syntax zwischen MySQL und PostgreSQL) mussten gelöst werden.
+
+- **Ton-Benachrichtigungen:** Wurden konzeptionell geplant und technisch angedacht, aber wegen Zeitmangels/Aufwendigkeit nicht implementiert. Versuche mit der Browser Notifications API zeigten erste Resultate, funktionierten aber nicht zuverlässig genug – daher wurde das Feature fallen gelassen.
+- **Sensor-Integration:** Die Schnittstelle zwischen ESP32 und Backend musste so einfach wie möglich gehalten werden. Die Lösung (ein einziger POST-Endpunkt, baby_id hardcoded im Sensor) hat sich als pragmatisch und robust erwiesen.
+- **Datenbank-Setup:** Kleinere SQL-Kompatibilitätsprobleme (z.B. `INTERVAL`-Syntax zwischen MySQL und PostgreSQL) mussten gelöst werden.
 
 **KI-Einsatz:**
-* **Claude:** Hauptsächlich für die Entwicklung des PHP-Backends, den initialen Aufbau der App-Architektur, das Schlaf-Verlaufsdiagramm auf der Dashboard-Seite, Erstellung der SQL-Skripte für die Dummydaten sowie Code-Dokumentation. Auch für die Implementierung des Night Mode verwendet.
-* KI wurde als Werkzeug eingesetzt, alle Entscheidungen zu Struktur und Design wurden vom Team getroffen und nachvollzogen.
+
+- **Claude:** Hauptsächlich für die Entwicklung des PHP-Backends, den initialen Aufbau der App-Architektur, das Schlaf-Verlaufsdiagramm auf der Dashboard-Seite, Erstellung der SQL-Skripte für die Dummydaten sowie Code-Dokumentation. Auch für die Implementierung des Night Mode verwendet.
+- KI wurde als Werkzeug eingesetzt, alle Entscheidungen zu Struktur und Design wurden vom Team getroffen und nachvollzogen.
 
 **Fazit:**
 GuetNacht ist ein funktionierendes IoT-System, das den Alltag von Eltern mit Kleinkindern vereinfacht. Die Zusammenarbeit zwischen Physical-Computing- und WebApp-Team über eine klar definierte Sensor-Schnittstelle hat gut funktioniert. Das Projekt zeigt, wie ein ESP32-Sensor, eine PHP-API und eine mobile Web-App zu einem kohärenten Produkt zusammenwachsen können.
